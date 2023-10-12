@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent any
 
     triggers {
@@ -13,11 +13,10 @@ pipeline{
         stage("Deliver") {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    bat 'docker login -u $USERNAME -p $PASSWORD'
+                    bat 'echo %PASSWORD% | docker login -u %USERNAME% --password-stdin'
                     bat "docker-compose push"
                 }
             }
         }
-
     }
 }
