@@ -5,10 +5,19 @@ pipeline{
         pollSCM("* * * * *")
     }
     stages {
-        stage("FirstStageTest") {
+        stage("Build") {
             steps {
-                echo "we are running.."
+                sh "docker compose build"
             }
         }
+        stage("Deliver") {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'docker login -u $USERNAME -p $PASSWORD'
+                    sh "docker compose push"
+                }
+            }
+        }
+
     }
 }
