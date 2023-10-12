@@ -15,8 +15,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     bat 'echo %USERNAME%'
                     bat 'echo %PASSWORD%'
-                    bat 'echo second $PASSWORD'
-                    bat 'echo %PASSWORD% | docker login -u %USERNAME% --password-stdin'
+                    bat 'docker login -u %USERNAME% -p %PASSWORD%'
                     bat "docker-compose push"
                 }
             }
